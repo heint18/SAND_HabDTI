@@ -1,0 +1,39 @@
+---
+title: "Habituation Bar Charts"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. 
+
+##Initializing Datasets
+```{r}
+R.AMY.Habituation = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/Extracted_RAMY_Hab.csv')
+
+AMY.Mean.SE.Habituation = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/Extracted_RAMYHab_averageSE.csv')
+
+AMY.Habituation.ForViolin = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/ExtractedRAMYHabViolinPlots.csv')
+
+```
+
+## Bar Plot of AMY Habituation
+```{r}
+library(ggplot2)
+limits = aes(ymax = AMY.Mean.SE.Habituation$Mean + AMY.Mean.SE.Habituation$SE, ymin = AMY.Mean.SE.Habituation$Mean - AMY.Mean.SE.Habituation$SE)
+AMY.Hab.Barplot = ggplot(data = AMY.Mean.SE.Habituation, aes(x=EmotionxHalf, y = Mean, fill = Group))
+AMY.Hab.Barplot + geom_bar(stat = "identity") + geom_errorbar(limits)+ theme(axis.text.x = element_text(angle = 60, hjust =1))
+```
+
+## Violin Plot of AMY Habituation
+```{r}
+library(ggplot2)
+AMY.Hab.ViolinPlot = ggplot(AMY.Habituation.ForViolin, aes(x= EmotionxHalf, y = ContrastValue, fill = Group))
+AMY.Hab.ViolinPlot + geom_violin() + theme(axis.text.x = element_text(angle = 60, hjust =1))
+```

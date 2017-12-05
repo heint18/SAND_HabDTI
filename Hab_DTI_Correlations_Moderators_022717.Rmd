@@ -1,0 +1,323 @@
+---
+title: "DTI & Hab Correlations and Moderators"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+##Initializing Datasets
+```{r}
+L.AMY.Habituation = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/LExtractedAMYHab.csv')
+R.AMY.Habituation = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/Extracted_RAMY_Hab.csv')
+L.ILF = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/L_ILF.csv')
+R.ILF = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/R_ILF.csv')
+L.SLF = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/L_SLF.csv')
+R.SLF = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/R_SLF.csv')
+L.UF = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/L_UF.csv')
+R.UF = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/R_UF.csv')
+Demos = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/Demos.csv')
+```
+##Calculating Habituation for L (extracted R is already habiutation)
+```{r}
+L.AMY.Habituation$LAllHab = L.AMY.Habituation$All1 - L.AMY.Habituation$All2
+L.AMY.Habituation$LFearHab = L.AMY.Habituation$Fear1 - L.AMY.Habituation$Fear2
+L.AMY.Habituation$LHappyHab = L.AMY.Habituation$Happy1 - L.AMY.Habituation$Happy2
+L.AMY.Habituation$LSadHab = L.AMY.Habituation$Sad1 - L.AMY.Habituation$Sad2
+L.AMY.Habituation$LNeutralHab = L.AMY.Habituation$Neutral1 - L.AMY.Habituation$Neutral2
+L.AMY.Habituation$LAngryHab = L.AMY.Habituation$Angry1 - L.AMY.Habituation$Angry2
+L.AMY.Habituation$LAngryFearHab = L.AMY.Habituation$AngryFear1 - L.AMY.Habituation$AngryFear2
+```
+##Merging Datasets
+```{r}
+L.UF.Hab = merge(L.AMY.Habituation, L.UF, by = "ID")
+R.UF.Hab = merge(R.AMY.Habituation, R.UF, by = "ID")
+L.ILF.Hab = merge(L.AMY.Habituation, L.ILF, by = "ID")
+R.ILF.Hab = merge(R.AMY.Habituation, R.ILF, by = "ID")
+L.SLF.Hab = merge(L.AMY.Habituation, L.SLF, by = "ID")
+R.SLF.Hab = merge(R.AMY.Habituation, R.SLF, by = "ID")
+L.UF.Hab.Demos = merge(L.UF.Hab, Demos, by = "ID")
+R.UF.Hab.Demos = merge(R.UF.Hab, Demos, by = "ID")
+```
+##Correlations between L UF and L AMY Hab
+```{r}
+cor.test(L.UF.Hab$L_UF_FA,L.UF.Hab$LAllHab)
+cor.test(L.UF.Hab$L_UF_FA,L.UF.Hab$LFearHab)
+cor.test(L.UF.Hab$L_UF_FA,L.UF.Hab$LHappyHab)
+cor.test(L.UF.Hab$L_UF_FA,L.UF.Hab$LSadHab)
+cor.test(L.UF.Hab$L_UF_FA,L.UF.Hab$LNeutralHab)
+cor.test(L.UF.Hab$L_UF_FA,L.UF.Hab$LAngryHab)
+cor.test(L.UF.Hab$L_UF_FA,L.UF.Hab$LAngryFearHab)
+cor.test(L.UF.Hab$L_UF_MD,L.UF.Hab$LAllHab)
+cor.test(L.UF.Hab$L_UF_MD,L.UF.Hab$LFearHab)
+cor.test(L.UF.Hab$L_UF_MD,L.UF.Hab$LHappyHab)
+cor.test(L.UF.Hab$L_UF_MD,L.UF.Hab$LSadHab)
+cor.test(L.UF.Hab$L_UF_MD,L.UF.Hab$LNeutralHab)
+cor.test(L.UF.Hab$L_UF_MD,L.UF.Hab$LAngryHab)
+cor.test(L.UF.Hab$L_UF_MD,L.UF.Hab$LAngryFearHab)
+cor.test(L.UF.Hab$L_UF_AD,L.UF.Hab$LAllHab)
+cor.test(L.UF.Hab$L_UF_AD,L.UF.Hab$LFearHab)
+cor.test(L.UF.Hab$L_UF_AD,L.UF.Hab$LHappyHab)
+cor.test(L.UF.Hab$L_UF_AD,L.UF.Hab$LSadHab)
+cor.test(L.UF.Hab$L_UF_AD,L.UF.Hab$LNeutralHab)
+cor.test(L.UF.Hab$L_UF_AD,L.UF.Hab$LAngryHab)
+cor.test(L.UF.Hab$L_UF_AD,L.UF.Hab$LAngryFearHab)
+cor.test(L.UF.Hab$L_UF_RD,L.UF.Hab$LAllHab)
+cor.test(L.UF.Hab$L_UF_RD,L.UF.Hab$LFearHab)
+cor.test(L.UF.Hab$L_UF_RD,L.UF.Hab$LHappyHab)
+cor.test(L.UF.Hab$L_UF_RD,L.UF.Hab$LSadHab)
+cor.test(L.UF.Hab$L_UF_RD,L.UF.Hab$LNeutralHab)
+cor.test(L.UF.Hab$L_UF_RD,L.UF.Hab$LAngryHab)
+cor.test(L.UF.Hab$L_UF_RD,L.UF.Hab$LAngryFearHab)
+```
+##Correlations between R UF and R AMY Hab
+```{r}
+cor.test(R.UF.Hab$R_UF_FA,R.UF.Hab$RAllHab)
+cor.test(R.UF.Hab$R_UF_FA,R.UF.Hab$RFearHab)
+cor.test(R.UF.Hab$R_UF_FA,R.UF.Hab$RHappyHab)
+cor.test(R.UF.Hab$R_UF_FA,R.UF.Hab$RSadHab)
+cor.test(R.UF.Hab$R_UF_FA,R.UF.Hab$RNeutralHab)
+cor.test(R.UF.Hab$R_UF_FA,R.UF.Hab$RAngryHab)
+cor.test(R.UF.Hab$R_UF_FA,R.UF.Hab$RAngryFearHab)
+cor.test(R.UF.Hab$R_UF_MD,R.UF.Hab$RAllHab)
+cor.test(R.UF.Hab$R_UF_MD,R.UF.Hab$RFearHab)
+cor.test(R.UF.Hab$R_UF_MD,R.UF.Hab$RHappyHab)
+cor.test(R.UF.Hab$R_UF_MD,R.UF.Hab$RSadHab)
+cor.test(R.UF.Hab$R_UF_MD,R.UF.Hab$RNeutralHab)
+cor.test(R.UF.Hab$R_UF_MD,R.UF.Hab$RAngryHab)
+cor.test(R.UF.Hab$R_UF_MD,R.UF.Hab$RAngryFearHab)
+cor.test(R.UF.Hab$R_UF_AD,R.UF.Hab$RAllHab)
+cor.test(R.UF.Hab$R_UF_AD,R.UF.Hab$RFearHab)
+cor.test(R.UF.Hab$R_UF_AD,R.UF.Hab$RHappyHab)
+cor.test(R.UF.Hab$R_UF_AD,R.UF.Hab$RSadHab)
+cor.test(R.UF.Hab$R_UF_AD,R.UF.Hab$RNeutralHab)
+cor.test(R.UF.Hab$R_UF_AD,R.UF.Hab$RAngryHab)
+cor.test(R.UF.Hab$R_UF_AD,R.UF.Hab$RAngryFearHab)
+cor.test(R.UF.Hab$R_UF_RD,R.UF.Hab$RAllHab)
+cor.test(R.UF.Hab$R_UF_RD,R.UF.Hab$RFearHab)
+cor.test(R.UF.Hab$R_UF_RD,R.UF.Hab$RHappyHab)
+cor.test(R.UF.Hab$R_UF_RD,R.UF.Hab$RSadHab)
+cor.test(R.UF.Hab$R_UF_RD,R.UF.Hab$RNeutralHab)
+cor.test(R.UF.Hab$R_UF_RD,R.UF.Hab$RAngryHab)
+cor.test(R.UF.Hab$R_UF_RD,R.UF.Hab$RAngryFearHab)
+```
+##Correlations between L ILF and L AMY Hab
+```{r}
+cor.test(L.ILF.Hab$L_ILF_FA,L.ILF.Hab$LAllHab)
+cor.test(L.ILF.Hab$L_ILF_FA,L.ILF.Hab$LFearHab)
+cor.test(L.ILF.Hab$L_ILF_FA,L.ILF.Hab$LHappyHab)
+cor.test(L.ILF.Hab$L_ILF_FA,L.ILF.Hab$LSadHab)
+cor.test(L.ILF.Hab$L_ILF_FA,L.ILF.Hab$LNeutralHab)
+cor.test(L.ILF.Hab$L_ILF_FA,L.ILF.Hab$LAngryHab)
+cor.test(L.ILF.Hab$L_ILF_FA,L.ILF.Hab$LAngryFearHab)
+cor.test(L.ILF.Hab$L_ILF_MD,L.ILF.Hab$LAllHab)
+cor.test(L.ILF.Hab$L_ILF_MD,L.ILF.Hab$LFearHab)
+cor.test(L.ILF.Hab$L_ILF_MD,L.ILF.Hab$LHappyHab)
+cor.test(L.ILF.Hab$L_ILF_MD,L.ILF.Hab$LSadHab)
+cor.test(L.ILF.Hab$L_ILF_MD,L.ILF.Hab$LNeutralHab)
+cor.test(L.ILF.Hab$L_ILF_MD,L.ILF.Hab$LAngryHab)
+cor.test(L.ILF.Hab$L_ILF_MD,L.ILF.Hab$LAngryFearHab)
+cor.test(L.ILF.Hab$L_ILF_AD,L.ILF.Hab$LAllHab)
+cor.test(L.ILF.Hab$L_ILF_AD,L.ILF.Hab$LFearHab)
+cor.test(L.ILF.Hab$L_ILF_AD,L.ILF.Hab$LHappyHab)
+cor.test(L.ILF.Hab$L_ILF_AD,L.ILF.Hab$LSadHab)
+cor.test(L.ILF.Hab$L_ILF_AD,L.ILF.Hab$LNeutralHab)
+cor.test(L.ILF.Hab$L_ILF_AD,L.ILF.Hab$LAngryHab)
+cor.test(L.ILF.Hab$L_ILF_AD,L.ILF.Hab$LAngryFearHab)
+cor.test(L.ILF.Hab$L_ILF_RD,L.ILF.Hab$LAllHab)
+cor.test(L.ILF.Hab$L_ILF_RD,L.ILF.Hab$LFearHab)
+cor.test(L.ILF.Hab$L_ILF_RD,L.ILF.Hab$LHappyHab)
+cor.test(L.ILF.Hab$L_ILF_RD,L.ILF.Hab$LSadHab)
+cor.test(L.ILF.Hab$L_ILF_RD,L.ILF.Hab$LNeutralHab)
+cor.test(L.ILF.Hab$L_ILF_RD,L.ILF.Hab$LAngryHab)
+cor.test(L.ILF.Hab$L_ILF_RD,L.ILF.Hab$LAngryFearHab)
+```
+##Correlations between R ILF and R AMY Hab
+```{r}
+cor.test(R.ILF.Hab$R_ILF_FA,R.ILF.Hab$RAllHab)
+cor.test(R.ILF.Hab$R_ILF_FA,R.ILF.Hab$RFearHab)
+cor.test(R.ILF.Hab$R_ILF_FA,R.ILF.Hab$RHappyHab)
+cor.test(R.ILF.Hab$R_ILF_FA,R.ILF.Hab$RSadHab)
+cor.test(R.ILF.Hab$R_ILF_FA,R.ILF.Hab$RNeutralHab)
+cor.test(R.ILF.Hab$R_ILF_FA,R.ILF.Hab$RAngryHab)
+cor.test(R.ILF.Hab$R_ILF_FA,R.ILF.Hab$RAngryFearHab)
+cor.test(R.ILF.Hab$R_ILF_MD,R.ILF.Hab$RAllHab)
+cor.test(R.ILF.Hab$R_ILF_MD,R.ILF.Hab$RFearHab)
+cor.test(R.ILF.Hab$R_ILF_MD,R.ILF.Hab$RHappyHab)
+cor.test(R.ILF.Hab$R_ILF_MD,R.ILF.Hab$RSadHab)
+cor.test(R.ILF.Hab$R_ILF_MD,R.ILF.Hab$RNeutralHab)
+cor.test(R.ILF.Hab$R_ILF_MD,R.ILF.Hab$RAngryHab)
+cor.test(R.ILF.Hab$R_ILF_MD,R.ILF.Hab$RAngryFearHab)
+cor.test(R.ILF.Hab$R_ILF_AD,R.ILF.Hab$RAllHab)
+cor.test(R.ILF.Hab$R_ILF_AD,R.ILF.Hab$RFearHab)
+cor.test(R.ILF.Hab$R_ILF_AD,R.ILF.Hab$RHappyHab)
+cor.test(R.ILF.Hab$R_ILF_AD,R.ILF.Hab$RSadHab)
+cor.test(R.ILF.Hab$R_ILF_AD,R.ILF.Hab$RNeutralHab)
+cor.test(R.ILF.Hab$R_ILF_AD,R.ILF.Hab$RAngryHab)
+cor.test(R.ILF.Hab$R_ILF_AD,R.ILF.Hab$RAngryFearHab)
+cor.test(R.ILF.Hab$R_ILF_RD,R.ILF.Hab$RAllHab)
+cor.test(R.ILF.Hab$R_ILF_RD,R.ILF.Hab$RFearHab)
+cor.test(R.ILF.Hab$R_ILF_RD,R.ILF.Hab$RHappyHab)
+cor.test(R.ILF.Hab$R_ILF_RD,R.ILF.Hab$RSadHab)
+cor.test(R.ILF.Hab$R_ILF_RD,R.ILF.Hab$RNeutralHab)
+cor.test(R.ILF.Hab$R_ILF_RD,R.ILF.Hab$RAngryHab)
+cor.test(R.ILF.Hab$R_ILF_RD,R.ILF.Hab$RAngryFearHab)
+```
+##Correlations between L SLF and L AMY Hab
+```{r}
+cor.test(L.SLF.Hab$L_SLF_FA,L.SLF.Hab$LAllHab)
+cor.test(L.SLF.Hab$L_SLF_FA,L.SLF.Hab$LFearHab)
+cor.test(L.SLF.Hab$L_SLF_FA,L.SLF.Hab$LHappyHab)
+cor.test(L.SLF.Hab$L_SLF_FA,L.SLF.Hab$LSadHab)
+cor.test(L.SLF.Hab$L_SLF_FA,L.SLF.Hab$LNeutralHab)
+cor.test(L.SLF.Hab$L_SLF_FA,L.SLF.Hab$LAngryHab)
+cor.test(L.SLF.Hab$L_SLF_FA,L.SLF.Hab$LAngryFearHab)
+cor.test(L.SLF.Hab$L_SLF_MD,L.SLF.Hab$LAllHab)
+cor.test(L.SLF.Hab$L_SLF_MD,L.SLF.Hab$LFearHab)
+cor.test(L.SLF.Hab$L_SLF_MD,L.SLF.Hab$LHappyHab)
+cor.test(L.SLF.Hab$L_SLF_MD,L.SLF.Hab$LSadHab)
+cor.test(L.SLF.Hab$L_SLF_MD,L.SLF.Hab$LNeutralHab)
+cor.test(L.SLF.Hab$L_SLF_MD,L.SLF.Hab$LAngryHab)
+cor.test(L.SLF.Hab$L_SLF_MD,L.SLF.Hab$LAngryFearHab)
+cor.test(L.SLF.Hab$L_SLF_AD,L.SLF.Hab$LAllHab)
+cor.test(L.SLF.Hab$L_SLF_AD,L.SLF.Hab$LFearHab)
+cor.test(L.SLF.Hab$L_SLF_AD,L.SLF.Hab$LHappyHab)
+cor.test(L.SLF.Hab$L_SLF_AD,L.SLF.Hab$LSadHab)
+cor.test(L.SLF.Hab$L_SLF_AD,L.SLF.Hab$LNeutralHab)
+cor.test(L.SLF.Hab$L_SLF_AD,L.SLF.Hab$LAngryHab)
+cor.test(L.SLF.Hab$L_SLF_AD,L.SLF.Hab$LAngryFearHab)
+cor.test(L.SLF.Hab$L_SLF_RD,L.SLF.Hab$LAllHab)
+cor.test(L.SLF.Hab$L_SLF_RD,L.SLF.Hab$LFearHab)
+cor.test(L.SLF.Hab$L_SLF_RD,L.SLF.Hab$LHappyHab)
+cor.test(L.SLF.Hab$L_SLF_RD,L.SLF.Hab$LSadHab)
+cor.test(L.SLF.Hab$L_SLF_RD,L.SLF.Hab$LNeutralHab)
+cor.test(L.SLF.Hab$L_SLF_RD,L.SLF.Hab$LAngryHab)
+cor.test(L.SLF.Hab$L_SLF_RD,L.SLF.Hab$LAngryFearHab)
+```
+##Correlations between R SLF and R AMY Hab
+```{r}
+cor.test(R.SLF.Hab$R_SLF_FA,R.SLF.Hab$RAllHab)
+cor.test(R.SLF.Hab$R_SLF_FA,R.SLF.Hab$RFearHab)
+cor.test(R.SLF.Hab$R_SLF_FA,R.SLF.Hab$RHappyHab)
+cor.test(R.SLF.Hab$R_SLF_FA,R.SLF.Hab$RSadHab)
+cor.test(R.SLF.Hab$R_SLF_FA,R.SLF.Hab$RNeutralHab)
+cor.test(R.SLF.Hab$R_SLF_FA,R.SLF.Hab$RAngryHab)
+cor.test(R.SLF.Hab$R_SLF_FA,R.SLF.Hab$RAngryFearHab)
+cor.test(R.SLF.Hab$R_SLF_MD,R.SLF.Hab$RAllHab)
+cor.test(R.SLF.Hab$R_SLF_MD,R.SLF.Hab$RFearHab)
+cor.test(R.SLF.Hab$R_SLF_MD,R.SLF.Hab$RHappyHab)
+cor.test(R.SLF.Hab$R_SLF_MD,R.SLF.Hab$RSadHab)
+cor.test(R.SLF.Hab$R_SLF_MD,R.SLF.Hab$RNeutralHab)
+cor.test(R.SLF.Hab$R_SLF_MD,R.SLF.Hab$RAngryHab)
+cor.test(R.SLF.Hab$R_SLF_MD,R.SLF.Hab$RAngryFearHab)
+cor.test(R.SLF.Hab$R_SLF_AD,R.SLF.Hab$RAllHab)
+cor.test(R.SLF.Hab$R_SLF_AD,R.SLF.Hab$RFearHab)
+cor.test(R.SLF.Hab$R_SLF_AD,R.SLF.Hab$RHappyHab)
+cor.test(R.SLF.Hab$R_SLF_AD,R.SLF.Hab$RSadHab)
+cor.test(R.SLF.Hab$R_SLF_AD,R.SLF.Hab$RNeutralHab)
+cor.test(R.SLF.Hab$R_SLF_AD,R.SLF.Hab$RAngryHab)
+cor.test(R.SLF.Hab$R_SLF_AD,R.SLF.Hab$RAngryFearHab)
+cor.test(R.SLF.Hab$R_SLF_RD,R.SLF.Hab$RAllHab)
+cor.test(R.SLF.Hab$R_SLF_RD,R.SLF.Hab$RFearHab)
+cor.test(R.SLF.Hab$R_SLF_RD,R.SLF.Hab$RHappyHab)
+cor.test(R.SLF.Hab$R_SLF_RD,R.SLF.Hab$RSadHab)
+cor.test(R.SLF.Hab$R_SLF_RD,R.SLF.Hab$RNeutralHab)
+cor.test(R.SLF.Hab$R_SLF_RD,R.SLF.Hab$RAngryHab)
+cor.test(R.SLF.Hab$R_SLF_RD,R.SLF.Hab$RAngryFearHab)
+```
+##Demos as moderator between L UF FA and L AMY Fear Hab
+```{r}
+AgeLUFFearHab = lm(LFearHab ~ L_UF_FA*Age, data=L.UF.Hab.Demos)
+summary(AgeLUFFearHab)
+PubertyLUFFearHab = lm(LFearHab ~ L_UF_FA*Puberty, data=L.UF.Hab.Demos)
+summary(PubertyLUFFearHab)
+```
+
+##Plotting simple slopes of puberty as moderator between L UF FA and L AMY Fear Hab
+```{r}
+library(rockchalk)
+plotSlopes(PubertyLUFFearHab, plotx = "L_UF_FA", modx = "Puberty", modxVals = "std.dev", interval = "confidence")
+```
+
+##Scatterplot added 3.15.17
+```{r}
+plot(L.UF.Hab$L_UF_FA,L.UF.Hab$LFearHab, xlab = "Left Uncinate Fasciculus FA", ylab = "Left Amygdala Habituation to Fear Faces", pch=21, bg="black")
+abline(lm(L.UF.Hab$LFearHab~L.UF.Hab$L_UF_FA), col = "black")
+```
+##FA values added 3.15.17
+```{r}
+Mean.L.UF.FA = mean(L.UF.Hab$L_UF_FA)
+Mean.R.UF.FA = mean(R.UF.Hab$R_UF_FA)
+SD.L.UF.FA = sd(L.UF.Hab$L_UF_FA)
+SD.R.UF.FA = sd(R.UF.Hab$R_UF_FA)
+Range.L.UF.FA = range(L.UF.Hab$L_UF_FA)
+Range.R.UF.FA = range(R.UF.Hab$R_UF_FA)
+print(Mean.L.UF.FA)
+print(Mean.R.UF.FA)
+print(SD.L.UF.FA)
+print(SD.R.UF.FA)
+print(Range.L.UF.FA)
+print (Range.R.UF.FA)
+```
+##Further exploring moderation of left hab-dti relation by puberty for paper added 5.1.17
+##Correlations between age, puberty, L UF FA, L hab to fear 
+```{r}
+cor.test(L.UF.Hab.Demos$L_UF_FA, L.UF.Hab.Demos$Age)
+cor.test(L.UF.Hab.Demos$L_UF_FA, L.UF.Hab.Demos$Puberty)
+cor.test(L.UF.Hab.Demos$Age, L.UF.Hab.Demos$Puberty)
+cor.test(L.UF.Hab.Demos$LFearHab, L.UF.Hab.Demos$Age)
+cor.test(L.UF.Hab.Demos$LFearHab, L.UF.Hab.Demos$Puberty)
+```
+##Correlations between age, puberty, R UF FA, added 6.12.17 
+```{r}
+cor.test(R.UF.Hab.Demos$R_UF_FA, R.UF.Hab.Demos$Age)
+cor.test(R.UF.Hab.Demos$R_UF_FA, R.UF.Hab.Demos$Puberty)
+```
+##Assigning groups based on +/- 1 SD above puberty mean and correlations by group
+```{r}
+Puberty.Mean = mean(L.UF.Hab.Demos$Puberty, na.rm = TRUE)
+Puberty.SD = sd(L.UF.Hab.Demos$Puberty, na.rm = TRUE)
+Puberty.1SDabove = (Puberty.Mean + Puberty.SD)
+Puberty.1SDbelow = (Puberty.Mean - Puberty.SD)
+print(Puberty.Mean)
+print(Puberty.SD)
+print(Puberty.1SDabove)
+print(Puberty.1SDbelow)
+L.UF.Hab.Demos$PubertyGroup = ifelse(L.UF.Hab.Demos$Puberty <= Puberty.1SDbelow, "0", ifelse(L.UF.Hab.Demos$Puberty >= Puberty.1SDabove, "1", NA))
+class(L.UF.Hab.Demos$PubertyGroup)
+library(plyr)
+LFearHab.byPubertyGroup = ddply(L.UF.Hab.Demos, c("PubertyGroup"), summarise, N = length(LFearHab), mean = mean(LFearHab), sd = sd(LFearHab), se = sd/sqrt(N))
+print(LFearHab.byPubertyGroup)
+LUFFA.byPubertyGroup = ddply(L.UF.Hab.Demos, c("PubertyGroup"), summarise, N = length(L_UF_FA), mean = mean(L_UF_FA), sd = sd(L_UF_FA), se = sd/sqrt(N))
+print(LUFFA.byPubertyGroup)
+```
+##Testing effects of gender on L UF FA, L amygdala habituation - added 5.3.17 based on LWH suggestion
+```{r}
+t.test(L.UF.Hab.Demos$L_UF_FA ~ L.UF.Hab.Demos$Gender)
+t.test(L.UF.Hab.Demos$LFearHab ~ L.UF.Hab.Demos$Gender)
+```
+##Testing effects of gender on R UF FA - added 6.12.17
+```{r}
+t.test(R.UF.Hab.Demos$R_UF_FA ~ R.UF.Hab.Demos$Gender)
+```
+##Testing effects of race on L UF FA, L amygdala habituation - added 5.3.17 based on LWH suggestion
+##Not large enough cell sizes to proceed with according to Chris Monk
+```{r}
+RaceEthnicity <- read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/RaceEthnicity.csv')
+L.UF.Hab.Demos.RaceIncluded = merge(RaceEthnicity, L.UF.Hab.Demos, by = "ID")
+Race.LUFFA = lm(L_UF_FA ~ Race, data = L.UF.Hab.Demos.RaceIncluded)
+summary(Race.LUFFA)
+anova(Race.LUFFA)
+Race.LAMYHab = lm(LFearHab ~ Race, data = L.UF.Hab.Demos.RaceIncluded)
+summary(Race.LAMYHab)
+anova(Race.LAMYHab)
+```

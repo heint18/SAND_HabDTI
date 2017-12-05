@@ -1,0 +1,55 @@
+---
+title: "Hab_DTI_Demographics"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+##Initializing Datasets
+```{r}
+library(foreign)
+Demographics = read.spss('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/Demo_Depression_NeighborhoodData_EW.sav', to.data.frame = TRUE)
+Demos = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/Demos.csv')
+SubjectList = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/demo_participant_list.csv')
+```
+##Merging Datatsets
+```{r}
+Demos.JustHabParticipants.MinusRace = merge(SubjectList, Demos, by = "ID")
+Demos.JustHabParticipants = merge(Demos.JustHabParticipants.MinusRace, Demographics, by = "ID")
+```
+##Counts for gender, race, ethnicity
+```{r}
+library(plyr)
+count(Demos.JustHabParticipants, 'Gender')
+count(Demos.JustHabParticipants, 'Black')
+count(Demos.JustHabParticipants, 'White')
+count(Demos.JustHabParticipants, 'NativeAmerican')
+count(Demos.JustHabParticipants, 'Asian')
+count(Demos.JustHabParticipants, 'Biracial')
+count(Demos.JustHabParticipants, 'Hispanic')
+```
+##Mean and SD for age and pubertal status
+```{r}
+Mean.Age = mean(Demos.JustHabParticipants$Age)
+SD.Age = sd(Demos.JustHabParticipants$Age)
+Mean.Puberty = mean(Demos.JustHabParticipants$Puberty, na.rm = TRUE)
+SD.Puberty = sd(Demos.JustHabParticipants$Puberty, na.rm = TRUE)
+Range.Age = range(Demos.JustHabParticipants$Age, na.rm = TRUE)
+Range.Puberty = range(Demos.JustHabParticipants$Puberty, na.rm = TRUE)
+print(Mean.Age)
+print(SD.Age)
+print(Mean.Puberty)
+print(SD.Puberty)
+print(Range.Age)
+print(Range.Puberty)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

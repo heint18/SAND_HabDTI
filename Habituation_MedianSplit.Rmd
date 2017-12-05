@@ -1,0 +1,94 @@
+---
+title: "Habituation_MedianSplit"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. 
+
+##Initializing data sets
+
+```{r}
+AMY.Habituation = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/ExtractedAMYHab.csv')
+
+DTI = read.csv('/Users/tylerhein/Dropbox/Faces_Hab_DTI/February2017/UF_FA_forSPM_02.14.17_fixed10189age.csv')
+
+```
+
+##Merging data sets
+
+```{r}
+Combined.Habituation.DTI = merge(AMY.Habituation, DTI, by = "ID")
+```
+
+##Finding average L UF FA
+```{r}
+Mean.L.UF.FA = mean(Combined.Habituation.DTI$UF_L_FAmean)
+Mean.L.UF.FA
+```
+
+##Assigning UF FA groups based on median split
+```{r}
+Combined.Habituation.DTI$MedianGroup = ifelse(Combined.Habituation.DTI$UF_L_FAmean <= Mean.L.UF.FA, "0", ifelse(Combined.Habituation.DTI$UF_L_FAmean > Mean.L.UF.FA, "1", NA))
+
+class(Combined.Habituation.DTI$MedianGroup)
+```
+
+##Comparing habituation between UF FA groups for all faces, fear faces
+```{r}
+results_allfaces = lm(Combined.Habituation.DTI$L_AMY_AllFaces_Hab ~ Combined.Habituation.DTI$MedianGroup)
+
+anova(results_allfaces)
+
+Combined.Habituation.DTI$L_AMY_FearFaces_Hab = (Combined.Habituation.DTI$Fear1 - Combined.Habituation.DTI$Fear2)
+
+results_fearfaces = lm(Combined.Habituation.DTI$L_AMY_FearFaces_Hab ~ Combined.Habituation.DTI$MedianGroup)
+
+anova(results_fearfaces)
+
+
+```
+
+##Scatterplot of two UF FA groups
+```{r}
+require("lattice")
+
+MedianSplitScatter = xyplot(Combined.Habituation.DTI$L_AMY_AllFaces_Hab ~ Combined.Habituation.DTI$UF_L_FAmean, Combined.Habituation.DTI, groups = Combined.Habituation.DTI$MedianGroup)
+
+print(MedianSplitScatter)
+
+FearMedianSplitScatter = xyplot(Combined.Habituation.DTI$L_AMY_FearFaces_Hab ~ Combined.Habituation.DTI$UF_L_FAmean, Combined.Habituation.DTI, groups = Combined.Habituation.DTI$MedianGroup)
+
+print(FearMedianSplitScatter)
+```
+
+##Assigning groups based on habituation (above or below 0) and calculating average habituation for each group
+```{r}
+
+Combined.Habituation.DTI$HabituationFearGroup = ifelse(Combined.Habituation.DTI$L_AMY_FearFaces_Hab <= 0, "0", ifelse(Combined.Habituation.DTI$L_AMY_FearFaces_Hab > 0, "1", NA))
+
+class(Combined.Habituation.DTI$HabituationFearGroup)
+
+Mean.Fear.Habituation = mean(Combined.Habituation.DTI$L_AMY_FearFaces_Hab)
+print (Mean.Fear.Habituation)
+
+library(plyr)
+
+Fear.Habituation.byHabGroup = ddply(Combined.Habituation.DTI, c("HabituationFearGroup"), summarise, N=length(L_AMY_FearFaces_Hab), mean = mean(L_AMY_FearFaces_Hab), sd = sd(L_AMY_FearFaces_Hab), se = sd/sqrt(N))
+
+print(Fear.Habituation.byHabGroup)
+```
+
+##TO BE FINISHED - TRYING TO TEST CORREL BTW FA, HAB SEPARATELY FOR 2 GROUPS
+library(plyr)
+testfunc = function(Combined.Habituation.DTI) {return(Combined.Habituation.DTI(COR = cor(Combined.Habituation.DTI$L_AMY_FearFaces_Hab, Combined.Habituation.DTI$UF_L_FAmean)))}
+ddply(Combined.Habituation.DTI, .(Combined.Habituation.DTI$HabituationFearGroup), testfunc)
